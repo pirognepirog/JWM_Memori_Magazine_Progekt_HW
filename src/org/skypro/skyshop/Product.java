@@ -16,6 +16,7 @@ public class Product {
     }
     // инициализация геттеров для чтения данных класса
 
+
     public String getNameProduct() {
         return nameProduct;
     }

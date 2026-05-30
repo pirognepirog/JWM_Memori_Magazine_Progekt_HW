@@ -66,9 +66,11 @@ public class ProductBasket {
         for (int i = 0; i < count; i++) {
             products[i] = null;
         }
+
         count = 0;
         totalPrase = 0;
         System.out.println("Очистка корзины завершена!");
+
     }
 
 
