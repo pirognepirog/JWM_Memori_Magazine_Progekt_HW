@@ -28,4 +28,18 @@ public class DiscountedProduct extends Product {
     }
 
 
+    @Override
+    public String getSearchTerm() {
+        return getContentType();
+    }
+
+    @Override
+    public String getContentType() {
+        return getContentType();
+    }
+
+    @Override
+    public String getName() {
+        return getName();
+    }
 }

@@ -1,5 +1,9 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.Article.Article;
+import org.skypro.skyshop.Article.SearchEngine;
+import org.skypro.skyshop.Article.Searchable;
+
 public class Main {
     public static void main(String[] args) {
     //Демонстрация
@@ -54,11 +58,29 @@ public class Main {
         //Специальных товаров: <Количество специальных товаров>
         System.out.println("Специальных товаров: " + basketHw2.getSpecialProductCount());
 
-
+        testSearchEngine();
 
     }
 
+    private static void testSearchEngine(){
+        System.out.println("Main.testSearchEngine");
+        //Создайте один объект типа SearchEngine и добавьте в него все товары
+        SearchEngine searchEngine = new SearchEngine();
+        // добавление объектов
+        searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
+        searchEngine.add(new SimpleProduct("Погодный зонт",100));
+        searchEngine.add(new SimpleProduct("Тетрадь",50));
 
+        //создание поискового массива (добавление объектов)
+        String query = "Погод";
+        System.out.println("Результат поиска по поисковому значению = " + query);
+        Searchable[] found = searchEngine.search(query);
 
+        for (Searchable item : found) {
+            if (item != null) {
+                System.out.println(item.getStringRepresentation());
+            }
+        }
 
+    }
 }

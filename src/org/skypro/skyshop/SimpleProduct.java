@@ -19,4 +19,11 @@ public class SimpleProduct extends Product {
     public int getPriceProduct() {
         return priceProduct;
     }
+
+    @Override
+    public String getSearchTerm() {
+        return getName();
+    }
+
+
 }

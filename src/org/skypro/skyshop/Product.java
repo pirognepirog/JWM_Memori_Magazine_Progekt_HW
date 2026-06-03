@@ -1,6 +1,8 @@
 package org.skypro.skyshop;
 
-public abstract class Product {
+import org.skypro.skyshop.Article.Searchable;
+
+public abstract class Product implements Searchable {
 
     // Эти значения должны быть немодифицируемыми  (тогда только геттеры)
     // после создания объекта, но должна быть возможность получить эти значения в других классах.
@@ -29,9 +31,24 @@ public abstract class Product {
     @Override
     public String toString() {
         return nameProduct + ": " + getPriceProduct() + " руб.";// + priceProduct;
-
     }
 
+    // методы интерфейса Searchable
+
+    @Override
+    public String getSearchTerm() {
+        return getNameProduct();
+    }
+
+    @Override
+    public String getContentType() {
+        return nameProduct + " цена " + getPriceProduct() + " руб.";
+    }
+
+    @Override
+    public String getName() {
+        return nameProduct;
+    }
 }
 
 
