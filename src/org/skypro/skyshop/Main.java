@@ -60,6 +60,30 @@ public class Main {
 
         testSearchEngine();
 
+        System.out.println();
+        System.out.println("===  Main для третьего задания  ===");// Main для третьего задания
+
+        System.out.println("===Добавление продукта в корзину.===");
+
+        try {
+            basket.addProduktInBasket("фломастер",-50);
+        }catch (IllegalArgumentException e) {
+            System.out.println("Товар не создан: " + e);
+        }
+
+        try {
+            basket.addProduktInBasket(" ",50);
+        }catch (IllegalArgumentException e) {
+            System.out.println("Товар не создан: " + e);
+        }
+
+        try {
+            DiscountedProduct discountedProductHW3 = new DiscountedProduct("Карандаш",100,-10);
+        }catch (IllegalArgumentException e) {
+            System.out.println("Товар со скидкой не создан: " + e);
+        }
+
+        testSearchRelevant();
     }
 
     private static void testSearchEngine(){
@@ -69,7 +93,7 @@ public class Main {
         // добавление объектов
         searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
         searchEngine.add(new SimpleProduct("Погодный зонт",100));
-        searchEngine.add(new SimpleProduct("Тетрадь",50));
+        searchEngine.add(new SimpleProduct("Фонарь",50));
 
         //создание поискового массива (добавление объектов)
         String query = "Погод";
@@ -82,5 +106,23 @@ public class Main {
             }
         }
 
+    }
+
+    private static void testSearchRelevant(){
+        SearchEngine searchEngine = new SearchEngine();
+        searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
+        searchEngine.add(new Article("Рисование","Фломастер рисует среднюю линию"));
+        searchEngine.add(new Article("Рисование","Шариковая ручка рисует тонкую линию"));
+        searchEngine.add(new Article("Художество","Кисть рисует толстую линию"));
+
+        // Поиск самых подходящих
+        System.out.println("\nРелевантный поиск 'рисует':");
+        Searchable[] relevant = searchEngine.searchRelevant("толстую");
+        System.out.println("Найдено релевантных результатов: " + relevant.length);
+        for (Searchable item : relevant) {
+            if (item != null) {
+                System.out.println("  - " + item.getName() + ": " + item.getSearchTerm());
+            }
+        }
     }
 }

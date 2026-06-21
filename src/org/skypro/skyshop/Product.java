@@ -4,7 +4,7 @@ import org.skypro.skyshop.Article.Searchable;
 
 public abstract class Product implements Searchable {
 
-    // Эти значения должны быть немодифицируемыми  (тогда только геттеры)
+    // Эти значения должны быть немодифицируемыми (тогда только геттеры)
     // после создания объекта, но должна быть возможность получить эти значения в других классах.
     // Создаю поля класса
 
@@ -13,6 +13,14 @@ public abstract class Product implements Searchable {
 
     //создаю конструктор
     public Product(String nameProduct) { //, int priceProduct){
+   /*
+     Название продукта не может быть пустой строкой или null. При этом пустая строка может быть также строкой,
+     состоящей только из пробелов: в этом случае правило не выполняется, так как это неправильное название
+     для продукта.
+    */
+        if (nameProduct == null || nameProduct.isBlank()) {
+            throw new IllegalArgumentException("Название продукта не корректно!");
+        }
         this.nameProduct = nameProduct;
         //this.priceProduct = priceProduct;
     }
