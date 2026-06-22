@@ -126,7 +126,7 @@ public class Main {
 
         // Поиск самых подходящих
         System.out.println("\nРелевантный поиск 'рисует':");
-        Searchable[] relevant = searchEngine.searchRelevant("толстую");
+        Searchable[] relevant = searchEngine.searchRelevant("летает");
         System.out.println("Найдено релевантных результатов: " + relevant.length);
         for (Searchable item : relevant) {
             if (item != null) {

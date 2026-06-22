@@ -72,7 +72,7 @@ public class SearchEngine {
             }
             // если нечего не найдено
             if (maxCount == 0) {
-                throw new BestResultNotFound(query);
+                throw new BestResultNotFound("Не найдено подходящих результатов!");
             }
 
             // Сначала считаем, сколько элементов подходит
