@@ -1,5 +1,7 @@
 package org.skypro.skyshop.Article;
 
+import org.skypro.skyshop.Article.BestResultNotFound;
+
 public class SearchEngine {
     // константа для ограничения поиска
     private static final int MAX_SIZE = 5;
@@ -51,57 +53,58 @@ public class SearchEngine {
 
     // метод - поиск релевантного значения
     public Searchable[] searchRelevant(String query) {
-        if(query == null && query.isEmpty()){
-            throw new IllegalArgumentException("Введено не корректное поисковое значение!");
-        }
-        // ищем максимальное количество вхлждений
-        int maxCount = 0;
-        for (int i = 0; i < searchables.length; i++) {
-            if (searchables[i] != null) {
-                String searchTerm = searchables[i].getSearchTerm();
-                if (searchTerm != null) {
-                    int count = countInStr(searchTerm, query);
-                    if (count > maxCount) {
-                        maxCount = count;
-                    }
-                }
-            }
-        }
-        // если нечего не найдено
-        if (maxCount == 0) {
-            return new Searchable[0];
-        }
 
-        // Сначала считаем, сколько элементов подходит
-        int validCount = 0;
-        for (int i = 0; i < searchables.length; i++) {
-            if (searchables[i] != null) {
-                String searchTerm = searchables[i].getSearchTerm();
-                if (searchTerm != null) {
-                    int count = countInStr(searchTerm, query);
-                    if (count == maxCount) {
-                        validCount++;
+            if(query == null && query.isEmpty()){
+                throw new IllegalArgumentException("Введено не корректное поисковое значение!");
+            }
+            // ищем максимальное количество вхлждений
+            int maxCount = 0;
+            for (int i = 0; i < searchables.length; i++) {
+                if (searchables[i] != null) {
+                    String searchTerm = searchables[i].getSearchTerm();
+                    if (searchTerm != null) {
+                        int count = countInStr(searchTerm, query);
+                        if (count > maxCount) {
+                            maxCount = count;
+                        }
                     }
                 }
             }
-        }
+            // если нечего не найдено
+            if (maxCount == 0) {
+                throw new BestResultNotFound(query);
+            }
 
-        // собираем все найденные элементы в массив
-        Searchable[] result = new Searchable[validCount];
-        int counter = 0;
-        for (int i = 0; i < searchables.length; i++) {
-            if (searchables[i] != null) {
-                String searchTerm = searchables[i].getSearchTerm();
-                if (searchTerm != null) {
-                    int count = countInStr(searchTerm, query);
-                    if (count == maxCount) {
-                        result[counter] = searchables[i];
-                        counter++;
+            // Сначала считаем, сколько элементов подходит
+            int validCount = 0;
+            for (int i = 0; i < searchables.length; i++) {
+                if (searchables[i] != null) {
+                    String searchTerm = searchables[i].getSearchTerm();
+                    if (searchTerm != null) {
+                        int count = countInStr(searchTerm, query);
+                        if (count == maxCount) {
+                            validCount++;
+                        }
                     }
                 }
             }
-        }
-        return result;
+
+            // собираем все найденные элементы в массив
+            Searchable[] result = new Searchable[validCount];
+            int counter = 0;
+            for (int i = 0; i < searchables.length; i++) {
+                if (searchables[i] != null) {
+                    String searchTerm = searchables[i].getSearchTerm();
+                    if (searchTerm != null) {
+                        int count = countInStr(searchTerm, query);
+                        if (count == maxCount) {
+                            result[counter] = searchables[i];
+                            counter++;
+                        }
+                    }
+                }
+            }
+            return result;
     }
 
     // вспомогительный метод для подсчета вхождения строки в подстроку

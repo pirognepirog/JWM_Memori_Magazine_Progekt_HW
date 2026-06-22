@@ -1,6 +1,7 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.Article.Article;
+import org.skypro.skyshop.Article.BestResultNotFound;
 import org.skypro.skyshop.Article.SearchEngine;
 import org.skypro.skyshop.Article.Searchable;
 
@@ -83,7 +84,15 @@ public class Main {
             System.out.println("Товар со скидкой не создан: " + e);
         }
 
-        testSearchRelevant();
+        try {
+            testSearchRelevant();
+        } catch (BestResultNotFound e) {
+            System.out.println(e);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+
     }
 
     private static void testSearchEngine(){
