@@ -1,11 +1,15 @@
 package org.skypro.skyshop.Article;
 
-public class BestResultNotFound extends RuntimeException {
+public class BestResultNotFound extends Exception  {
     private final String searchString;
 
     public BestResultNotFound(String searchString) {
         super("Не найдено ни одного релевантного результата для: " + searchString);
         this.searchString = searchString;
+    }
+
+    public String getSearchString() {
+        return searchString;
     }
 
     @Override

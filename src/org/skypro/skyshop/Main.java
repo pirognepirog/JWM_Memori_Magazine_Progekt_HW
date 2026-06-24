@@ -86,13 +86,7 @@ public class Main {
             System.out.println("Товар со скидкой не создан: " + e);
         }
 
-        try {
-            testSearchRelevant();
-        } catch (BestResultNotFound e) {
-            System.out.println(e);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ошибка: " + e.getMessage());
-        }
+        testSearchRelevant();
 
         testRemoveEngine();
     }
@@ -124,21 +118,28 @@ public class Main {
 
     }
 
-    private static void testSearchRelevant(){
+    private static void testSearchRelevant() {
         SearchEngine searchEngine = new SearchEngine();
         searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
         searchEngine.add(new Article("Рисование","Фломастер рисует среднюю линию"));
         searchEngine.add(new Article("Рисование","Шариковая ручка рисует тонкую линию"));
         searchEngine.add(new Article("Художество","Кисть рисует толстую линию"));
 
-        // Поиск самых подходящих
-        System.out.println("\nРелевантный поиск 'рисует':");
-        Searchable[] relevant = searchEngine.searchRelevant("Кисть");
-        System.out.println("Найдено релевантных результатов: " + relevant.length);
-        for (Searchable item : relevant) {
-            if (item != null) {
-                System.out.println("  - " + item.getName() + ": " + item.getSearchTerm());
+        String query = "летает";
+        System.out.println("\nРелевантный поиск '" + query + "':");
+
+        try {
+            Searchable[] relevant = searchEngine.searchRelevant(query);
+            System.out.println("Найдено релевантных результатов: " + relevant.length);
+            for (Searchable item : relevant) {
+                if (item != null) {
+                    System.out.println("  - " + item.getName() + ": " + item.getSearchTerm());
+                }
             }
+        } catch (BestResultNotFound e) {
+            System.out.println("Результат: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка ввода: " + e.getMessage());
         }
     }
 
@@ -178,5 +179,4 @@ public class Main {
             }
         }
     }
-
 }

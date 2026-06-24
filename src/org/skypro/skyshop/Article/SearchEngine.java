@@ -69,7 +69,7 @@ public class SearchEngine {
     // кинул исправленный код для проверкии ИИ, в результате было обнаружено, что код по массиву проходит 3 раза
     // что не является оптимальным, тут использовал код, предложенный ИИ
 
-    public Searchable[] searchRelevant(String query) {
+    public Searchable[] searchRelevant(String query) throws BestResultNotFound {
         // Проверка на null или пустую строку
         if (query == null || query.isEmpty()) {
             throw new IllegalArgumentException("Введено некорректное поисковое значение!");
@@ -96,7 +96,7 @@ public class SearchEngine {
 
         // Если ничего не найдено
         if (relevanceMap.isEmpty() || maxCount == 0) {
-            throw new BestResultNotFound("Не найдено подходящих результатов!");
+            throw new BestResultNotFound(query);
         }
 
         // Собираем результаты с максимальной релевантностью
