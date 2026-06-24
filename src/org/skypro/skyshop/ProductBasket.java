@@ -1,15 +1,23 @@
 package org.skypro.skyshop;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.skypro.skyshop.SimpleProduct;
 
 public class ProductBasket {
-    private Product[] products;
+    // по заданию нужно убрать массив и сделать его листом
+    // private Product[] products;
+    private List<Product> products;
     private int count;
     private int totalPrase;
 
-    public ProductBasket(int size) {
-        this.products = new Product[size];
+    public ProductBasket() { // int size - убран, так как List не имеет размера (динамический набор)
+        //this.products = new Product[size];
+        // по заданию нужно убрать массив и сделать его листом
+        // реализация листа в контрукторе
+        this.products = new ArrayList<>();
         this.count = 0;
         this.totalPrase = 0;
     }
@@ -19,7 +27,8 @@ public class ProductBasket {
             System.out.println("Корзина не создана, отсутствует продукт!");
             return;
         }
-
+/*      отключено, так как теперь не имеет смысла следить за размерностью листа
+        так как от не имеет размера (динамический набор данных)
         if (count < products.length) {
             products[count] = new SimpleProduct(name, prise);  // теперь работает
             totalPrase += prise;
@@ -27,6 +36,7 @@ public class ProductBasket {
         } else {
             System.out.println("Невозможно добавить продукт, корзина заполнена!");
         }
+ */
     }
 
     // новый метод для перегрузки метода addProduktInBasket
@@ -35,6 +45,8 @@ public class ProductBasket {
             System.out.println("Корзина не создана, отсутствует продукт!");
             return;
         }
+/*      отключено, так как теперь не имеет смысла следить за размерностью листа
+        так как от не имеет размера (динамический набор данных)
         if (count < products.length) {
             products[count] = product;
             totalPrase += product.getPriceProduct();
@@ -42,13 +54,15 @@ public class ProductBasket {
         } else {
             System.out.println("Невозможно добавить продукт, корзина заполнена!");
         }
+
+ */
     }
 
     // Метод подсчёта специальных товаров (FixPriceProduct и DiscountedProduct)
     public int getSpecialProductCount() {
         int specialCount = 0;
-        for (int i = 0; i < this.count; i++) {
-           if (products[i] != null && products[i].isSpecial()) {
+        for (Product product : products) {
+           if (product != null && product.isSpecial()) {
                specialCount++;
            }
         }
@@ -60,19 +74,19 @@ public class ProductBasket {
     }
 
     public void printBacket() {
-        if (count == 0) {
+        if (products.isEmpty()) {
             System.out.println("В корзине пусто!");
             return;
         }
-        for (int i = 0; i < count; i++) {
-            System.out.println(products[i]);
+        for (Product product : products) {
+            System.out.println(product);;
         }
         System.out.println("Итого: " + totalPrase  + " руб.");
     }
 
     public boolean verificationBacket(String nameProduct) {
-        for (int i = 0; i < count; i++) {
-            if (products[i] != null && products[i].getNameProduct().equals(nameProduct)) {
+        for (Product product : products) {
+            if (product != null && product.getNameProduct().equals(nameProduct)) {
                 System.out.println("В корзине найдено наименование продукта: " + nameProduct);
                 return true;
             }
@@ -82,11 +96,10 @@ public class ProductBasket {
     }
 
     public void clearBacket() {
-        for (int i = 0; i < count; i++) {
-            products[i] = null;
-        }
-        count = 0;
+        products.clear();
         totalPrase = 0;
         System.out.println("Очистка корзины завершена!");
     }
+
+
 }

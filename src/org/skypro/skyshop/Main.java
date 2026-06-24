@@ -5,12 +5,14 @@ import org.skypro.skyshop.Article.BestResultNotFound;
 import org.skypro.skyshop.Article.SearchEngine;
 import org.skypro.skyshop.Article.Searchable;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
     //Демонстрация
 
    // ProductBasket basket = new ProductBasket(3);
-        ProductBasket basket = new ProductBasket(3);
+        ProductBasket basket = new ProductBasket();
 
         System.out.println("===Добавление продукта в корзину.===");
         basket.addProduktInBasket("фломастер",50);
@@ -49,7 +51,7 @@ public class Main {
         System.out.println(fixPrice);
 
         // Создаём корзину и добавляем товары
-        ProductBasket basketHw2 = new ProductBasket(10);
+        ProductBasket basketHw2 = new ProductBasket();
         basketHw2.addProduktInBasket(simpleProduct);
         basketHw2.addProduktInBasket(discountedProduct);
         basketHw2.addProduktInBasket(fixPrice);
@@ -92,7 +94,7 @@ public class Main {
             System.out.println("Ошибка: " + e.getMessage());
         }
 
-
+        testRemoveEngine();
     }
 
     private static void testSearchEngine(){
@@ -107,11 +109,16 @@ public class Main {
         //создание поискового массива (добавление объектов)
         String query = "Погод";
         System.out.println("Результат поиска по поисковому значению = " + query);
-        Searchable[] found = searchEngine.search(query);
+        // Выполняем поиск
+        List<Searchable> found = searchEngine.search(query);
 
-        for (Searchable item : found) {
-            if (item != null) {
-                System.out.println(item.getStringRepresentation());
+        // Выводим результаты
+        if (found.isEmpty()) {
+            System.out.println("Ничего не найдено!");
+        } else {
+            System.out.println("Найдено " + found.size() + " результатов:");
+            for (Searchable item : found) {
+                System.out.println("  - " + item.getStringRepresentation());
             }
         }
 
@@ -126,7 +133,7 @@ public class Main {
 
         // Поиск самых подходящих
         System.out.println("\nРелевантный поиск 'рисует':");
-        Searchable[] relevant = searchEngine.searchRelevant("летает");
+        Searchable[] relevant = searchEngine.searchRelevant("Кисть");
         System.out.println("Найдено релевантных результатов: " + relevant.length);
         for (Searchable item : relevant) {
             if (item != null) {
@@ -134,4 +141,42 @@ public class Main {
             }
         }
     }
+
+    private static void testRemoveEngine(){
+        System.out.println("Main.testRemoveEngine");
+        //Создайте один объект типа SearchEngine и добавьте в него все товары
+        SearchEngine searchEngine = new SearchEngine();
+        // добавление объектов
+        searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
+        searchEngine.add(new SimpleProduct("Погодный зонт",100));
+        searchEngine.add(new SimpleProduct("Фонарь",50));
+
+        //создание поискового массива (добавление объектов)
+            String query = "Фонарь";
+        System.out.println("Удаляем товары по запросу: " + query);
+        // Выполняем удаление
+        List<Searchable> removed = searchEngine.removeProductBasket(query);
+
+        // выводим результат
+        if (removed.isEmpty()) {
+            System.out.println("Товары не найдены для удаления!");
+        } else {
+            System.out.println("Удалено товаров: " + removed.size());
+            for (Searchable item : removed) {
+                System.out.println("  - " + item.getStringRepresentation());
+            }
+        }
+
+        // Показываем корзину после удаления
+        System.out.println("\nКорзина после удаления:");
+        List<Searchable> remaining = searchEngine.getSearchables();
+        if (remaining.isEmpty()) {
+            System.out.println("Корзина пуста!");
+        } else {
+            for (Searchable item : remaining) {
+                System.out.println("  - " + item.getStringRepresentation());
+            }
+        }
+    }
+
 }

@@ -2,17 +2,19 @@ package org.skypro.skyshop.Article;
 
 import org.skypro.skyshop.Article.BestResultNotFound;
 
+import java.util.*;
+
 public class SearchEngine {
     // константа для ограничения поиска
-    private static final int MAX_SIZE = 5;
+    // private static final int MAX_SIZE = 5;
     // массив строк для поиска
-    private Searchable[] searchables;
+    private List<Searchable> searchables;
 
     //котструктор размерности массива
     public SearchEngine() {
-        this.searchables = new Searchable[MAX_SIZE];
+        this.searchables = new LinkedList<>(); //[MAX_SIZE]; - не нужен, так как нет размерности
     }
-
+/*
     // метод для работы поискового движка для поиска предметов
     public void add(Searchable item){
         for (int i = 0; i < searchables.length; i++) {
@@ -24,25 +26,37 @@ public class SearchEngine {
         System.out.println("Массив поиска заполнен!");
     }
 
-    // метод - поисковый движок
-    public Searchable[] search(String query) {
-        // обьявляю массив незультатов
-        Searchable[] result = new Searchable[MAX_SIZE];
-        int counter = 0;                  // счетчик результатов
+ */
+    // новый метод для работы поискового движка для поиска предметов
+    public void add(Searchable item){
+        // проверка на null
+        if (item == null) {
+            System.out.println("Нет товара для добавления в корзину!");
+            return;
+        }
+        // проверка на то, что в корзине элемент уже существует
+        if (searchables.contains(item)) {
+            System.out.println(item + " - этот товар уже добавлен в корзину!");
+            return;
+        }
+        searchables.add(item); // ложим товар в корзину
+    }
 
-        for (int i = 0; i < searchables.length; i++) {
+    // метод - поисковый движок
+    public List<Searchable> search(String query) {
+        // обьявляю список незультатов
+        List<Searchable> result = new LinkedList<>();
+
+        // проходим по всем элементам списка циклом
+        for (Searchable i : searchables) {
                                           // проверка на количество результатов
-            if (counter >= MAX_SIZE){     // если нашли результатов до ограничения - выходим
-                break;                    // чтобы не грузить систему с поиском лишнего
-            }
                                           // проверка на null, для получения значения из ячейки массива
-            if (searchables[i] != null) {
-                                          // присваиваю значение поисковой строке
-                String searchTerm = searchables[i].getSearchTerm();
-                                          // сверяю значения из массива товаров с поисковой строкой
+            if (i != null) {
+                                          // получаю поисковую строку
+                String searchTerm = i.getSearchTerm();
+                                          // сверяю значения из с поисковым запросом
                 if (searchTerm != null && searchTerm.contains(query)){
-                    result[counter] = searchables[i]; // добавляю массив в результат
-                    counter++;
+                    result.add(i); // добавляю массив в результат
                 }
 
             }
@@ -52,59 +66,48 @@ public class SearchEngine {
     }
 
     // метод - поиск релевантного значения
-    public Searchable[] searchRelevant(String query) {
+    // кинул исправленный код для проверкии ИИ, в результате было обнаружено, что код по массиву проходит 3 раза
+    // что не является оптимальным, тут использовал код, предложенный ИИ
 
-            if(query == null && query.isEmpty()){
-                throw new IllegalArgumentException("Введено не корректное поисковое значение!");
-            }
-            // ищем максимальное количество вхлждений
-            int maxCount = 0;
-            for (int i = 0; i < searchables.length; i++) {
-                if (searchables[i] != null) {
-                    String searchTerm = searchables[i].getSearchTerm();
-                    if (searchTerm != null) {
-                        int count = countInStr(searchTerm, query);
+    public Searchable[] searchRelevant(String query) {
+        // Проверка на null или пустую строку
+        if (query == null || query.isEmpty()) {
+            throw new IllegalArgumentException("Введено некорректное поисковое значение!");
+        }
+
+        // Используем Map для хранения результатов и их релевантности
+        Map<Searchable, Integer> relevanceMap = new HashMap<>();
+        int maxCount = 0;
+
+        for (Searchable item : searchables) {
+            if (item != null) {
+                String searchTerm = item.getSearchTerm();
+                if (searchTerm != null) {
+                    int count = countInStr(searchTerm, query);
+                    if (count > 0) {
+                        relevanceMap.put(item, count);
                         if (count > maxCount) {
                             maxCount = count;
                         }
                     }
                 }
             }
-            // если нечего не найдено
-            if (maxCount == 0) {
-                throw new BestResultNotFound("Не найдено подходящих результатов!");
-            }
+        }
 
-            // Сначала считаем, сколько элементов подходит
-            int validCount = 0;
-            for (int i = 0; i < searchables.length; i++) {
-                if (searchables[i] != null) {
-                    String searchTerm = searchables[i].getSearchTerm();
-                    if (searchTerm != null) {
-                        int count = countInStr(searchTerm, query);
-                        if (count == maxCount) {
-                            validCount++;
-                        }
-                    }
-                }
-            }
+        // Если ничего не найдено
+        if (relevanceMap.isEmpty() || maxCount == 0) {
+            throw new BestResultNotFound("Не найдено подходящих результатов!");
+        }
 
-            // собираем все найденные элементы в массив
-            Searchable[] result = new Searchable[validCount];
-            int counter = 0;
-            for (int i = 0; i < searchables.length; i++) {
-                if (searchables[i] != null) {
-                    String searchTerm = searchables[i].getSearchTerm();
-                    if (searchTerm != null) {
-                        int count = countInStr(searchTerm, query);
-                        if (count == maxCount) {
-                            result[counter] = searchables[i];
-                            counter++;
-                        }
-                    }
-                }
+        // Собираем результаты с максимальной релевантностью
+        List<Searchable> result = new ArrayList<>();
+        for (Map.Entry<Searchable, Integer> entry : relevanceMap.entrySet()) {
+            if (entry.getValue() == maxCount) {
+                result.add(entry.getKey());
             }
-            return result;
+        }
+
+        return result.toArray(new Searchable[0]);
     }
 
     // вспомогительный метод для подсчета вхождения строки в подстроку
@@ -124,5 +127,42 @@ public class SearchEngine {
             subStrInd = text.indexOf(subString, index);
         }
         return count;
+    }
+
+    // метод для удаления из корзины
+    public List<Searchable> removeProductBasket(String query) {
+        // обьявляю список результатов
+        List<Searchable> removedProducts  = new LinkedList<>();
+
+        // проверяем, есть ли в корзине товары, до того как выполнять поиск
+        if (searchables.isEmpty()) {
+            System.out.println("Корзина пуста!");
+            return removedProducts; // возвращаем пустой список
+        }
+        // использование итератора для удаления
+        Iterator<Searchable> iterator = searchables.iterator();
+        while (iterator.hasNext()) {
+            Searchable i = iterator.next();
+            if (i != null) {
+                String searchTerm = i.getSearchTerm();
+                if (searchTerm != null && searchTerm.contains(query)) {
+                    removedProducts.add(i); // добавление в список удаленных
+                    iterator.remove(); // удаление из корзины через итератор
+                }
+            }
+        }
+        // проверка, пуста ли стала корзина
+        if (searchables.isEmpty()) {
+            System.out.println("В корзине больше нечего нет!");
+        }
+
+        return removedProducts;
+    }
+    public boolean isEmpty() {
+        return searchables.isEmpty();
+    }
+
+    public List<Searchable> getSearchables() {
+        return searchables;
     }
 }
