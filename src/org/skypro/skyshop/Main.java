@@ -6,6 +6,8 @@ import org.skypro.skyshop.Article.SearchEngine;
 import org.skypro.skyshop.Article.Searchable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -92,7 +94,7 @@ public class Main {
     }
 
     private static void testSearchEngine(){
-        System.out.println("Main.testSearchEngine");
+        System.out.println("Main.testSearchEngine - TreeMap");
         //Создайте один объект типа SearchEngine и добавьте в него все товары
         SearchEngine searchEngine = new SearchEngine();
         // добавление объектов
@@ -104,15 +106,15 @@ public class Main {
         String query = "Погод";
         System.out.println("Результат поиска по поисковому значению = " + query);
         // Выполняем поиск
-        List<Searchable> found = searchEngine.search(query);
-
+        // List<Searchable> found = searchEngine.search(query); // старый вариант под лист
+        Map<String, Searchable> found = searchEngine.search(query); // новый вариант под Map
         // Выводим результаты
         if (found.isEmpty()) {
             System.out.println("Ничего не найдено!");
         } else {
             System.out.println("Найдено " + found.size() + " результатов:");
-            for (Searchable item : found) {
-                System.out.println("  - " + item.getStringRepresentation());
+            for (Map.Entry<String, Searchable> entry : found.entrySet()) {
+                System.out.println("  - " + entry.getKey() + ": " + entry.getValue().getStringRepresentation());
             }
         }
 
