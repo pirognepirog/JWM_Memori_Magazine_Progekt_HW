@@ -5,9 +5,7 @@ import org.skypro.skyshop.Article.BestResultNotFound;
 import org.skypro.skyshop.Article.SearchEngine;
 import org.skypro.skyshop.Article.Searchable;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -101,14 +99,23 @@ public class Main {
         searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
         searchEngine.add(new SimpleProduct("Погодный зонт",100));
         searchEngine.add(new SimpleProduct("Фонарь",50));
+        searchEngine.add(new Article("Солнечная погода", "Сегодня солнечно..."));
+        searchEngine.add(new Article("Дождь", "Идёт сильный дождь..."));
+        searchEngine.add(new Article("А", "Тест с одной буквой"));
+        searchEngine.add(new Article("Б", "Тест с одной буквой"));
+
+
+
 
         //создание поискового массива (добавление объектов)
         String query = "Погод";
         System.out.println("Результат поиска по поисковому значению = " + query);
         // Выполняем поиск
         // List<Searchable> found = searchEngine.search(query); // старый вариант под лист
-        Map<String, Searchable> found = searchEngine.search(query); // новый вариант под Map
-        // Выводим результаты
+        // Map<String, Searchable> found = searchEngine.search(query); // новый вариант под Map
+        TreeSet<Searchable> found = searchEngine.search(query); // новый вариант под TreeSet
+ /*
+        // Выводим результаты для MAP
         if (found.isEmpty()) {
             System.out.println("Ничего не найдено!");
         } else {
@@ -118,6 +125,16 @@ public class Main {
             }
         }
 
+  */
+        // Выводим результаты для HashSet
+        if (found.isEmpty()) {
+            System.out.println("Ничего не найдено!");
+        } else {
+            System.out.println("Найдено " + found.size() + " результатов:");
+            for (Searchable i : found) {
+                System.out.println("  - " + i.getStringRepresentation());
+            }
+        }
     }
 
     private static void testSearchRelevant() {
@@ -145,6 +162,10 @@ public class Main {
         }
     }
 
+// ==============================
+// МЕТОД ДЛЯ РАБОТЫ С  List
+// ==============================
+/*
     private static void testRemoveEngine(){
         System.out.println("Main.testRemoveEngine");
         //Создайте один объект типа SearchEngine и добавьте в него все товары
@@ -173,6 +194,50 @@ public class Main {
         // Показываем корзину после удаления
         System.out.println("\nКорзина после удаления:");
         List<Searchable> remaining = searchEngine.getSearchables();
+        if (remaining.isEmpty()) {
+            System.out.println("Корзина пуста!");
+        } else {
+            for (Searchable item : remaining) {
+                System.out.println("  - " + item.getStringRepresentation());
+            }
+        }
+    }
+
+ */
+
+
+// ==============================
+// МЕТОД ДЛЯ РАБОТЫ С  List
+// ==============================
+
+    private static void testRemoveEngine(){
+        System.out.println("Main.testRemoveEngine");
+        //Создайте один объект типа SearchEngine и добавьте в него все товары
+        SearchEngine searchEngine = new SearchEngine();
+        // добавление объектов
+        searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
+        searchEngine.add(new SimpleProduct("Погодный зонт",100));
+        searchEngine.add(new SimpleProduct("Фонарь",50));
+
+        //создание поискового массива (добавление объектов)
+        String query = "Фонарь";
+        System.out.println("Удаляем товары по запросу: " + query);
+        // Выполняем удаление
+        HashSet<Searchable> removed = searchEngine.removeProductBasket(query);
+
+        // выводим результат
+        if (removed.isEmpty()) {
+            System.out.println("Товары не найдены для удаления!");
+        } else {
+            System.out.println("Удалено товаров: " + removed.size());
+            for (Searchable item : removed) {
+                System.out.println("  - " + item.getStringRepresentation());
+            }
+        }
+
+        // Показываем корзину после удаления
+        System.out.println("\nКорзина после удаления:");
+        HashSet<Searchable> remaining = searchEngine.getSearchables();
         if (remaining.isEmpty()) {
             System.out.println("Корзина пуста!");
         } else {

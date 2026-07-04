@@ -8,11 +8,14 @@ public class SearchEngine {
     // константа для ограничения поиска
     // private static final int MAX_SIZE = 5;
     // массив строк для поиска
-    private List<Searchable> searchables;
+    // private List<Searchable> searchables;  // работа с листами
+
+    private HashSet<Searchable> searchables; // работа с Set
 
     //котструктор размерности массива
     public SearchEngine() {
-        this.searchables = new LinkedList<>(); //[MAX_SIZE]; - не нужен, так как нет размерности
+        // this.searchables = new LinkedList<>(); //[MAX_SIZE]; - не нужен, так как нет размерности, РАБОТА С ЛИСТАМИ
+        this.searchables = new HashSet<>(); // РАБОТА С Set
     }
 /*
     // метод для работы поискового движка для поиска предметов
@@ -72,6 +75,10 @@ public class SearchEngine {
 с ключом — именем Searchable-объекта и значением — самим Searchable -объектом.
 */
 
+    //===================================================
+    // РЕАЛИЗАЦИЯ ДЛЯ MAP    РЕАЛИЗАЦИЯ ДЛЯ MAP
+    // ==================================================
+/*
     // метод - поисковый движок (выбрал - TreeMap - так как сортирует под капотом)
     public Map<String,Searchable> search(String query) {
         // обьявляю список незультатов
@@ -98,6 +105,36 @@ public class SearchEngine {
             }
         return result;
     }
+*/
+    //===================================================
+    // РЕАЛИЗАЦИЯ ДЛЯ SET    РЕАЛИЗАЦИЯ ДЛЯ SET
+    // ==================================================
+
+    public TreeSet<Searchable> search(String query) {
+        // обьявляю список незультатов
+        // HashSet<Searchable> result = new HashSet<>();
+        TreeSet<Searchable> result = new TreeSet<>(new SearchableComparator());
+        String lowerQuery = query.toLowerCase();
+
+        // проходим по всем элементам списка циклом
+        for (Searchable i : searchables) { // цикл — по каждому товару внутри списка
+            // проверка на количество результатов
+            // проверка на null, для получения значения из ячейки массива
+            if (i != null) {
+
+                // получаю поисковую строку (имя объекта по ключу)
+                String searchTerm = i.getSearchTerm();
+                // сверяю значения из с поисковым запросом
+                if (searchTerm != null && searchTerm.toLowerCase().contains(lowerQuery)) {
+                    result.add(i); // добавляю массив в результат
+                }
+
+            }
+        }
+        return result;
+    }
+
+
     // метод - поиск релевантного значения
     // кинул исправленный код для проверкии ИИ, в результате было обнаружено, что код по массиву проходит 3 раза
     // что не является оптимальным, тут использовал код, предложенный ИИ
@@ -162,6 +199,10 @@ public class SearchEngine {
         return count;
     }
 
+    //===================================================
+    // РЕАЛИЗАЦИЯ ДЛЯ List    РЕАЛИЗАЦИЯ ДЛЯ List
+    // ==================================================
+/*
     // метод для удаления из корзины
     public List<Searchable> removeProductBasket(String query) {
         // обьявляю список результатов
@@ -191,11 +232,72 @@ public class SearchEngine {
 
         return removedProducts;
     }
+*/
+
+    //===================================================
+    // РЕАЛИЗАЦИЯ ДЛЯ Set    РЕАЛИЗАЦИЯ ДЛЯ Set
+    // ==================================================
+
+    // метод для удаления из корзины
+    public HashSet<Searchable> removeProductBasket(String query) {
+        // обьявляю список результатов
+        HashSet<Searchable> removedProducts  = new HashSet<>();
+
+        // проверяем, есть ли в корзине товары, до того как выполнять поиск
+        if (searchables.isEmpty()) {
+            System.out.println("Корзина пуста!");
+            return removedProducts; // возвращаем пустой список
+        }
+        // использование итератора для удаления
+        Iterator<Searchable> iterator = searchables.iterator();
+        while (iterator.hasNext()) {
+            Searchable i = iterator.next();
+            if (i != null) {
+                String searchTerm = i.getSearchTerm();
+                if (searchTerm != null && searchTerm.contains(query)) {
+                    removedProducts.add(i); // добавление в список удаленных
+                    iterator.remove(); // удаление из корзины через итератор
+                }
+            }
+        }
+        // проверка, пуста ли стала корзина
+        if (searchables.isEmpty()) {
+            System.out.println("В корзине больше нечего нет!");
+        }
+
+        return removedProducts;
+    }
+
     public boolean isEmpty() {
         return searchables.isEmpty();
     }
 
-    public List<Searchable> getSearchables() {
-        return searchables;
+
+
+
+    //===================================================
+    // РЕАЛИЗАЦИЯ ДЛЯ List    РЕАЛИЗАЦИЯ ДЛЯ List
+    // ==================================================
+   // public List<Searchable> getSearchables() {
+   //     return searchables;
+   // }
+
+    //===================================================
+    // РЕАЛИЗАЦИЯ ДЛЯ SET    РЕАЛИЗАЦИЯ ДЛЯ SET
+    // =================================================
+    public HashSet<Searchable> getSearchables() {
+         return searchables;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SearchEngine that = (SearchEngine) o;
+        return Objects.equals(searchables, that.searchables);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(searchables);
     }
 }
