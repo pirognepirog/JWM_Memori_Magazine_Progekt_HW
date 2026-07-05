@@ -36,7 +36,7 @@ public class ProductBasket {
         this.totalPrice = 0;
     }
 
-    public void addProduktInBasket(String name, int prise) {
+    public void addProduсtInBasket(String name, int prise) {
         if (products == null) {
             System.out.println("Корзина не создана, отсутствует продукт!");
             return;
@@ -53,8 +53,8 @@ public class ProductBasket {
  */
     }
 
-    // новый метод для перегрузки метода addProduktInBasket
-    public void addProduktInBasket(Product product) {
+    // новый метод для перегрузки метода addProduсtInBasket
+    public void addProduсtInBasket(Product product) {
         if (products == null) {
             System.out.println("Корзина не создана, отсутствует продукт!");
             return;
@@ -86,7 +86,7 @@ public class ProductBasket {
         return specialCount;
     }
 
-    public int getTotalPrase() {
+    public int totalPrice () {
         return totalPrice;
     }
 

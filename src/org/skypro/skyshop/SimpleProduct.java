@@ -44,6 +44,6 @@ public class SimpleProduct extends Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), priceProduct);
+        return Objects.hash(getName(), priceProduct);
     }
 }

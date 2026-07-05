@@ -17,19 +17,7 @@ public class SearchEngine {
         // this.searchables = new LinkedList<>(); //[MAX_SIZE]; - не нужен, так как нет размерности, РАБОТА С ЛИСТАМИ
         this.searchables = new HashSet<>(); // РАБОТА С Set
     }
-/*
-    // метод для работы поискового движка для поиска предметов
-    public void add(Searchable item){
-        for (int i = 0; i < searchables.length; i++) {
-            if(searchables[i] == null){ // если находим пустую ячейку массива
-                searchables[i] = item;  // кладем в нее поисковый предмет
-                return;                 // выходим по заполнению массива
-            }
-        }
-        System.out.println("Массив поиска заполнен!");
-    }
 
- */
     // новый метод для работы поискового движка для поиска предметов
     public void add(Searchable item){
         // проверка на null
@@ -44,68 +32,7 @@ public class SearchEngine {
         }
         searchables.add(item); // ложим товар в корзину
     }
-/*
-    // метод - поисковый движок
-    public List<Searchable> search(String query) {
-        // обьявляю список незультатов
-        List<Searchable> result = new LinkedList<>();
 
-        // проходим по всем элементам списка циклом
-        for (Searchable i : searchables) {
-                                          // проверка на количество результатов
-                                          // проверка на null, для получения значения из ячейки массива
-            if (i != null) {
-                                          // получаю поисковую строку
-                String searchTerm = i.getSearchTerm();
-                                          // сверяю значения из с поисковым запросом
-                if (searchTerm != null && searchTerm.contains(query)){
-                    result.add(i); // добавляю массив в результат
-                }
-
-            }
-
-        }
-        return result;
-    }
- */
- /*
- 2. Модификация возвращаемого значения в методе поиска
-В классе поискового движка вам нужно модифицировать метод поиска таким образом,
-чтобы он возвращал отсортированную по именам мапу:
-с ключом — именем Searchable-объекта и значением — самим Searchable -объектом.
-*/
-
-    //===================================================
-    // РЕАЛИЗАЦИЯ ДЛЯ MAP    РЕАЛИЗАЦИЯ ДЛЯ MAP
-    // ==================================================
-/*
-    // метод - поисковый движок (выбрал - TreeMap - так как сортирует под капотом)
-    public Map<String,Searchable> search(String query) {
-        // обьявляю список незультатов
-        Map<String, Searchable> result = new TreeMap();
-
-        // проходим по всем элементам списка циклом
-
-            for (Searchable i : searchables) { // цикл — по каждому товару внутри списка
-                // проверка на количество результатов
-                // проверка на null, для получения значения из ячейки массива
-                if (i != null) {
-
-                    // Получаю имя объекта (ключ)
-                    String name = i.getName();
-
-                    // получаю поисковую строку (имя объекта по ключу)
-                    String searchTerm = i.getSearchTerm();
-                    // сверяю значения из с поисковым запросом
-                    if (searchTerm != null && searchTerm.contains(query)) {
-                        result.put(name ,i); // добавляю массив в результат
-                    }
-
-                }
-            }
-        return result;
-    }
-*/
     //===================================================
     // РЕАЛИЗАЦИЯ ДЛЯ SET    РЕАЛИЗАЦИЯ ДЛЯ SET
     // ==================================================
@@ -200,41 +127,6 @@ public class SearchEngine {
     }
 
     //===================================================
-    // РЕАЛИЗАЦИЯ ДЛЯ List    РЕАЛИЗАЦИЯ ДЛЯ List
-    // ==================================================
-/*
-    // метод для удаления из корзины
-    public List<Searchable> removeProductBasket(String query) {
-        // обьявляю список результатов
-        List<Searchable> removedProducts  = new LinkedList<>();
-
-        // проверяем, есть ли в корзине товары, до того как выполнять поиск
-        if (searchables.isEmpty()) {
-            System.out.println("Корзина пуста!");
-            return removedProducts; // возвращаем пустой список
-        }
-        // использование итератора для удаления
-        Iterator<Searchable> iterator = searchables.iterator();
-        while (iterator.hasNext()) {
-            Searchable i = iterator.next();
-            if (i != null) {
-                String searchTerm = i.getSearchTerm();
-                if (searchTerm != null && searchTerm.contains(query)) {
-                    removedProducts.add(i); // добавление в список удаленных
-                    iterator.remove(); // удаление из корзины через итератор
-                }
-            }
-        }
-        // проверка, пуста ли стала корзина
-        if (searchables.isEmpty()) {
-            System.out.println("В корзине больше нечего нет!");
-        }
-
-        return removedProducts;
-    }
-*/
-
-    //===================================================
     // РЕАЛИЗАЦИЯ ДЛЯ Set    РЕАЛИЗАЦИЯ ДЛЯ Set
     // ==================================================
 
@@ -271,16 +163,6 @@ public class SearchEngine {
     public boolean isEmpty() {
         return searchables.isEmpty();
     }
-
-
-
-
-    //===================================================
-    // РЕАЛИЗАЦИЯ ДЛЯ List    РЕАЛИЗАЦИЯ ДЛЯ List
-    // ==================================================
-   // public List<Searchable> getSearchables() {
-   //     return searchables;
-   // }
 
     //===================================================
     // РЕАЛИЗАЦИЯ ДЛЯ SET    РЕАЛИЗАЦИЯ ДЛЯ SET

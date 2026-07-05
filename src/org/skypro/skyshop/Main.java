@@ -15,9 +15,9 @@ public class Main {
         ProductBasket basket = new ProductBasket();
 
         System.out.println("===Добавление продукта в корзину.===");
-        basket.addProduktInBasket("фломастер",50);
-        basket.addProduktInBasket("карандашь",25);
-        basket.addProduktInBasket("маркер",150);
+        basket.addProduсtInBasket("фломастер",50);
+        basket.addProduсtInBasket("карандашь",25);
+        basket.addProduсtInBasket("маркер",150);
 
         System.out.println("===Печать содержимого корзины с несколькими товарами и Получение стоимости корзины с несколькими товарами.===");
         basket.printBacket();
@@ -26,7 +26,7 @@ public class Main {
         basket.verificationBacket("фломастер");
 
         System.out.println("===Поиск товара, которого нет в корзине.===");
-        basket.addProduktInBasket("тетрадь",70);
+        basket.addProduсtInBasket("тетрадь",70);
         basket.verificationBacket("тетрадь");
 
         System.out.println("===Очистка корзины и Печать содержимого пустой корзины и Получение стоимости пустой корзины.===");
@@ -52,9 +52,9 @@ public class Main {
 
         // Создаём корзину и добавляем товары
         ProductBasket basketHw2 = new ProductBasket();
-        basketHw2.addProduktInBasket(simpleProduct);
-        basketHw2.addProduktInBasket(discountedProduct);
-        basketHw2.addProduktInBasket(fixPrice);
+        basketHw2.addProduсtInBasket(simpleProduct);
+        basketHw2.addProduсtInBasket(discountedProduct);
+        basketHw2.addProduсtInBasket(fixPrice);
 
         //Итого: <общая стоимость корзины>
         basketHw2.printBacket();
@@ -69,13 +69,13 @@ public class Main {
         System.out.println("===Добавление продукта в корзину.===");
 
         try {
-            basket.addProduktInBasket("фломастер",-50);
+            basket.addProduсtInBasket("фломастер",-50);
         }catch (IllegalArgumentException e) {
             System.out.println("Товар не создан: " + e);
         }
 
         try {
-            basket.addProduktInBasket(" ",50);
+            basket.addProduсtInBasket(" ",50);
         }catch (IllegalArgumentException e) {
             System.out.println("Товар не создан: " + e);
         }
@@ -104,9 +104,6 @@ public class Main {
         searchEngine.add(new Article("А", "Тест с одной буквой"));
         searchEngine.add(new Article("Б", "Тест с одной буквой"));
 
-
-
-
         //создание поискового массива (добавление объектов)
         String query = "Погод";
         System.out.println("Результат поиска по поисковому значению = " + query);
@@ -114,18 +111,7 @@ public class Main {
         // List<Searchable> found = searchEngine.search(query); // старый вариант под лист
         // Map<String, Searchable> found = searchEngine.search(query); // новый вариант под Map
         TreeSet<Searchable> found = searchEngine.search(query); // новый вариант под TreeSet
- /*
-        // Выводим результаты для MAP
-        if (found.isEmpty()) {
-            System.out.println("Ничего не найдено!");
-        } else {
-            System.out.println("Найдено " + found.size() + " результатов:");
-            for (Map.Entry<String, Searchable> entry : found.entrySet()) {
-                System.out.println("  - " + entry.getKey() + ": " + entry.getValue().getStringRepresentation());
-            }
-        }
 
-  */
         // Выводим результаты для HashSet
         if (found.isEmpty()) {
             System.out.println("Ничего не найдено!");
@@ -161,49 +147,6 @@ public class Main {
             System.out.println("Ошибка ввода: " + e.getMessage());
         }
     }
-
-// ==============================
-// МЕТОД ДЛЯ РАБОТЫ С  List
-// ==============================
-/*
-    private static void testRemoveEngine(){
-        System.out.println("Main.testRemoveEngine");
-        //Создайте один объект типа SearchEngine и добавьте в него все товары
-        SearchEngine searchEngine = new SearchEngine();
-        // добавление объектов
-        searchEngine.add(new Article("Погодные условия","12/05/ Погода дождливая...."));
-        searchEngine.add(new SimpleProduct("Погодный зонт",100));
-        searchEngine.add(new SimpleProduct("Фонарь",50));
-
-        //создание поискового массива (добавление объектов)
-            String query = "Фонарь";
-        System.out.println("Удаляем товары по запросу: " + query);
-        // Выполняем удаление
-        List<Searchable> removed = searchEngine.removeProductBasket(query);
-
-        // выводим результат
-        if (removed.isEmpty()) {
-            System.out.println("Товары не найдены для удаления!");
-        } else {
-            System.out.println("Удалено товаров: " + removed.size());
-            for (Searchable item : removed) {
-                System.out.println("  - " + item.getStringRepresentation());
-            }
-        }
-
-        // Показываем корзину после удаления
-        System.out.println("\nКорзина после удаления:");
-        List<Searchable> remaining = searchEngine.getSearchables();
-        if (remaining.isEmpty()) {
-            System.out.println("Корзина пуста!");
-        } else {
-            for (Searchable item : remaining) {
-                System.out.println("  - " + item.getStringRepresentation());
-            }
-        }
-    }
-
- */
 
 
 // ==============================
