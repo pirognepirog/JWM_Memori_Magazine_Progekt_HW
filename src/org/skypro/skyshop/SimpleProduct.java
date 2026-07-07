@@ -39,11 +39,11 @@ public class SimpleProduct extends Product {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SimpleProduct that = (SimpleProduct) o;
-        return priceProduct == that.priceProduct;
+        return Objects.equals(getName(), that.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), priceProduct);
+        return Objects.hash(getName());
     }
 }

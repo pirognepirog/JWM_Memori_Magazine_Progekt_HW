@@ -45,16 +45,16 @@ public class DiscountedProduct extends Product {
 
     @Override
     public String getSearchTerm() {
-        return getContentType();
+        return getNameProduct();
     }
 
     @Override
     public String getContentType() {
-        return getContentType();
+        return getNameProduct() + " цена " + getPriceProduct() + " руб.";
     }
 
     @Override
     public String getName() {
-        return getName();
+        return getNameProduct();
     }
 }
