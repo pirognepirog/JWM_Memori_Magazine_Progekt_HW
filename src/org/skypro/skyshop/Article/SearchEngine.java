@@ -1,8 +1,10 @@
 package org.skypro.skyshop.Article;
 
 import org.skypro.skyshop.Article.BestResultNotFound;
+import org.skypro.skyshop.Product;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     // константа для ограничения поиска
@@ -38,27 +40,22 @@ public class SearchEngine {
     // ==================================================
 
     public TreeSet<Searchable> search(String query) {
-        // обьявляю список незультатов
-        // HashSet<Searchable> result = new HashSet<>();
-        TreeSet<Searchable> result = new TreeSet<>(new SearchableComparator());
-        String lowerQuery = query.toLowerCase();
-
-        // проходим по всем элементам списка циклом
-        for (Searchable i : searchables) { // цикл — по каждому товару внутри списка
-            // проверка на количество результатов
-            // проверка на null, для получения значения из ячейки массива
-            if (i != null) {
-
-                // получаю поисковую строку (имя объекта по ключу)
-                String searchTerm = i.getSearchTerm();
-                // сверяю значения из с поисковым запросом
-                if (searchTerm != null && searchTerm.toLowerCase().contains(lowerQuery)) {
-                    result.add(i); // добавляю массив в результат
-                }
-
-            }
-        }
-        return result;
+        String lowerQuery = query.toLowerCase();  // преобразованная поисковая строка к нижнему регистру
+                                                  // для того, чтобы не зависеть от регистра
+        return searchables.stream() // открытие потока для searchables
+                .filter(Objects::nonNull) // убираю null (для исключения исключений ...)
+                .filter(i -> { // принимаю поисковый объект из TreeSet<Searchable> и присваиваю его для term
+                    String term = i.getSearchTerm(); // в проекте "зонт", к примеру
+                    return term != null && term.toLowerCase().contains(lowerQuery); // сравниваю объекты в
+                                                                                    // нижнем регистре
+                    // в текущем проекте = зонт.toLowerCase().contains(зонт)
+                    // term != null  - чтобы не провалиться в ошибку, для страховки
+                    // конечно можно обработать иначе через исключение, например через Message и не работать
+                    // но у нас бекенд, это для фронтенда задача
+                    // в результате работа сравнима оператору like для "*" term "*" в SQL (VBA)
+                })
+                .collect(Collectors.toCollection(()-> new TreeSet<>(new SearchableComparator())));
+                // завершаю поток, терминальная операция со сборкой в новый TreeSet с SearchableComparator
     }
 
 
